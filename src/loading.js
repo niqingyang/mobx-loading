@@ -3,6 +3,8 @@ import {observable, action} from 'mobx';
 // reference https://github.com/mobxjs/mobx/blob/master/src/api/actiondecorator.ts
 class Loading {
 
+    // 目前修改后不会起作用的
+    @observable
     config = {
         // when the loading name is not defined, the class name and method name are automatically identified,
         // and this configuration controls whether the first letter of the class name or method name is converted to lowercase.
@@ -27,7 +29,7 @@ class Loading {
     @action
     change = (model, action, state) => {
 
-        if(action){
+        if (action) {
             this.actions[action] = state;
         }
 
@@ -48,6 +50,14 @@ class Loading {
                 return this.models[key] === true;
             });
         }
+    }
+
+    @action
+    changeConfig = (config) => {
+        this.config = {
+            ...this.config,
+            config
+        };
     }
 }
 
