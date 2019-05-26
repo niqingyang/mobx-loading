@@ -59,10 +59,18 @@ function actionDecorator(target, prop, descriptor, name) {
             name,
             lowerCaseFirst(`${name}${instance.config.separator}${prop}`)
         ];
-    } else {
+    } else if (Array.isArray(name)) {
         names = [
-            name,
-            `${name}${instance.config.separator}`
+            name[0],
+            name.length > 1 ? name.join(instance.config.separator) : null
+        ];
+    } else {
+
+        name = String(name).split(instance.config.separator);
+
+        names = [
+            name[0],
+            name.length > 1 ? name.join(instance.config.separator) : null
         ];
     }
 

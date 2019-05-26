@@ -27,15 +27,19 @@ class Loading {
     @action
     change = (model, action, state) => {
 
+        if(action){
+            this.actions[action] = state;
+        }
+
         if (state === true) {
-            this.actions[action] = true;
+
             this.models[model] = true;
             this.global = true;
+
         } else {
-            this.actions[action] = false;
 
             this.models[model] = Object.keys(this.actions).filter(key => {
-                return key.startsWith(`${model}${this.config.separator}`);
+                return key && key.startsWith(`${model}${this.config.separator}`);
             }).some(key => {
                 return this.actions[key] === true;
             });

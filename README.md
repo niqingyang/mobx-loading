@@ -31,6 +31,30 @@ class User {
         return Promise;
     }
     
+    @loading('user')
+    @action
+    fetchA = () => {
+        // ...do some things
+        // 返回 一个 Promise 对象
+        return Promise;
+    }
+    
+    @loading('user/a')
+    @action
+    fetchB = () => {
+        // ...do some things
+        // 返回 一个 Promise 对象
+        return Promise;
+    }
+    
+    @loading(['user', 'c'])
+        @action
+        fetchC = () => {
+            // ...do some things
+            // 返回 一个 Promise 对象
+            return Promise;
+        }
+    
     // .... some things
 }
 ```
@@ -60,6 +84,9 @@ import {inject} from 'mobx-react';
 
 @inject(({loading}) => {
     featchUserLoading: loading.actions['user/fetchUser'],
+    featchALoading: loading.actions['user/a'],
+    featchBLoading: loading.actions['user/b'],
+    featchCLoading: loading.actions['user/c'],
     userLoading: loading.models.user,
     globalLoading: loading.global
 })
