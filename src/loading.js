@@ -1,4 +1,4 @@
-import {observable, action, toJS} from 'mobx';
+import {observable, action} from 'mobx';
 
 // reference https://github.com/mobxjs/mobx/blob/master/src/api/actiondecorator.ts
 class Loading {
@@ -7,7 +7,7 @@ class Loading {
         // when the loading name is not defined, the class name and method name are automatically identified,
         // and this configuration controls whether the first letter of the class name or method name is converted to lowercase.
         lowerCaseFirst: true,
-        // Separator between model and effect
+        // Separator between model and action
         separator: '/'
     }
 
@@ -19,20 +19,20 @@ class Loading {
     @observable
     models = {}
 
-    // load status of each effect
+    // load status of each action
     @observable
     actions = {}
 
     // change load status
     @action
-    change = (model, effect, state) => {
+    change = (model, action, state) => {
 
         if (state === true) {
-            this.actions[effect] = true;
+            this.actions[action] = true;
             this.models[model] = true;
             this.global = true;
         } else {
-            this.actions[effect] = false;
+            this.actions[action] = false;
 
             this.models[model] = Object.keys(this.actions).filter(key => {
                 return key.startsWith(`${model}${this.config.separator}`);
@@ -44,8 +44,6 @@ class Loading {
                 return this.models[key] === true;
             });
         }
-
-        console.log('loading', toJS(this));
     }
 }
 

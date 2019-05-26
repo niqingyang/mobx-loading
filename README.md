@@ -47,11 +47,7 @@ store.loading = instance;
 
 ReactDOM.render(
     <Provider {...store}>
-        <BrowserRouter>
-            <IntlProvider locale="zh" messages={messages.zh}>
-                <App/>
-            </IntlProvider>
-        </BrowserRouter>
+        <App/>
     </Provider>,
     document.getElementById('root')
 );
@@ -63,7 +59,7 @@ ReactDOM.render(
 import {inject} from 'mobx-react';
 
 @inject(({loading}) => {
-    featchUserLoading: loading.effects['user/fetchUser'],
+    featchUserLoading: loading.actions['user/fetchUser'],
     userLoading: loading.models.user,
     globalLoading: loading.global
 })
