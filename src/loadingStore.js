@@ -1,7 +1,7 @@
 import {observable, action} from 'mobx';
 
 // reference https://github.com/mobxjs/mobx/blob/master/src/api/actiondecorator.ts
-class Loading {
+class LoadingStore {
 
     // 目前修改后不会起作用的
     @observable
@@ -61,4 +61,4 @@ class Loading {
     }
 }
 
-export default new Loading();
+export default new LoadingStore();

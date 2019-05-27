@@ -1,4 +1,4 @@
-import {instance} from './index';
+import loadingStore from './loadingStore';
 
 // lowercase the first
 function lowerCaseFirst(str) {
@@ -24,7 +24,7 @@ function executeAction(names, func, scope) {
 
         const [model, action] = names;
 
-        instance.change(model, action, true);
+        loadingStore.change(model, action, true);
 
         const promise = func.apply(scope || this, arguments);
 
@@ -32,12 +32,12 @@ function executeAction(names, func, scope) {
         if (typeof promise === 'object' && typeof promise.then === 'function') {
             promise.then((response) => {
 
-                instance.change(model, action, false);
+                loadingStore.change(model, action, false);
 
                 return response;
             });
         } else {
-            instance.change(model, action, false);
+            loadingStore.change(model, action, false);
         }
 
         return promise;
@@ -50,27 +50,27 @@ function actionDecorator(target, prop, descriptor, name) {
 
     if (typeof name === 'undefined' && target.constructor && typeof target.constructor.name === 'string') {
 
-        if (instance.config.lowerCaseFirst) {
+        if (loadingStore.config.lowerCaseFirst) {
             name = lowerCaseFirst(target.constructor.name);
             prop = lowerCaseFirst(prop);
         }
 
         names = [
             name,
-            lowerCaseFirst(`${name}${instance.config.separator}${prop}`)
+            lowerCaseFirst(`${name}${loadingStore.config.separator}${prop}`)
         ];
     } else if (Array.isArray(name)) {
         names = [
             name[0],
-            name.length > 1 ? name.join(instance.config.separator) : null
+            name.length > 1 ? name.join(loadingStore.config.separator) : null
         ];
     } else {
 
-        name = String(name).split(instance.config.separator);
+        name = String(name).split(loadingStore.config.separator);
 
         names = [
             name[0],
-            name.length > 1 ? name.join(instance.config.separator) : null
+            name.length > 1 ? name.join(loadingStore.config.separator) : null
         ];
     }
 
@@ -104,12 +104,12 @@ function actionDecorator(target, prop, descriptor, name) {
         }
     }
 
-    // bound instance methods
+    // bound loadingStore methods
     return fieldActionDecorator(names).apply(this, arguments);
 }
 
 function fieldActionDecorator(name) {
-    // Simple property that writes on first invocation to the current instance
+    // Simple property that writes on first invocation to the current loadingStore
     return function (target, prop, descriptor) {
         Object.defineProperty(target, prop, {
             configurable: true,

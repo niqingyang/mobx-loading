@@ -27,15 +27,22 @@ class User {
     @action
     fetchUser = () => {
         // ...do some things
-        // 返回 一个 Promise 对象
+        // 返回一个 Promise 对象
         return Promise;
+    }
+    
+    @loading
+    @action
+    fetchList = () => {
+        // ...do some things
+        // 也可以不返回 Promise 对象
     }
     
     @loading('user')
     @action
     fetchA = () => {
         // ...do some things
-        // 返回 一个 Promise 对象
+        // 返回一个 Promise 对象
         return Promise;
     }
     
@@ -43,17 +50,17 @@ class User {
     @action
     fetchB = () => {
         // ...do some things
-        // 返回 一个 Promise 对象
+        // 返回一个 Promise 对象
         return Promise;
     }
     
     @loading(['user', 'c'])
-        @action
-        fetchC = () => {
-            // ...do some things
-            // 返回 一个 Promise 对象
-            return Promise;
-        }
+    @action
+    fetchC = () => {
+        // ...do some things
+        // 返回一个 Promise 对象
+        return Promise;
+    }
     
     // .... some things
 }
@@ -63,11 +70,11 @@ class User {
 
 
 ```js
-import {instance} from 'mobx-loading'
+import {loadingStore} from 'mobx-loading'
 
 // ....
 
-store.loading = instance;
+store.loading = loadingStore;
 
 ReactDOM.render(
     <Provider {...store}>
@@ -84,6 +91,7 @@ import {inject} from 'mobx-react';
 
 @inject(({loading}) => {
     featchUserLoading: loading.actions['user/fetchUser'],
+    featchListLoading: loading.actions['user/fetchList'],
     featchALoading: loading.actions['user/a'],
     featchBLoading: loading.actions['user/b'],
     featchCLoading: loading.actions['user/c'],
