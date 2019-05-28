@@ -35,6 +35,11 @@ function executeAction(names, func, scope) {
                 loadingStore.change(model, action, false);
 
                 return response;
+            }, (error) => {
+
+                loadingStore.change(model, action, false);
+
+                return Promise.reject(error);
             });
         } else {
             loadingStore.change(model, action, false);
