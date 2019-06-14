@@ -1,4 +1,4 @@
-import loadingStore from './loadingStore';
+import loadingStore, {NAMESPACE_SEP} from './loadingStore';
 
 // lowercase the first
 function lowerCaseFirst(str) {
@@ -29,17 +29,9 @@ function executeAction(names, func, scope) {
         const promise = func.apply(scope || this, arguments);
 
         // hope is a promise object
-        if (typeof promise === 'object' && typeof promise.then === 'function') {
-            promise.then((response) => {
-
+        if (typeof promise === 'object' && typeof promise.finally === 'function') {
+            promise.finally(()=>{
                 loadingStore.change(model, action, false);
-
-                return response;
-            }, (error) => {
-
-                loadingStore.change(model, action, false);
-
-                return Promise.reject(error);
             });
         } else {
             loadingStore.change(model, action, false);
@@ -55,27 +47,30 @@ function actionDecorator(target, prop, descriptor, name) {
 
     if (typeof name === 'undefined' && target.constructor && typeof target.constructor.name === 'string') {
 
-        if (loadingStore.config.lowerCaseFirst) {
+        if (target.namespace) {
+            name = target.namespace;
+            prop = lowerCaseFirst(prop);
+        } else {
             name = lowerCaseFirst(target.constructor.name);
             prop = lowerCaseFirst(prop);
         }
 
         names = [
             name,
-            lowerCaseFirst(`${name}${loadingStore.config.separator}${prop}`)
+            lowerCaseFirst(`${name}${NAMESPACE_SEP}${prop}`)
         ];
     } else if (Array.isArray(name)) {
         names = [
             name[0],
-            name.length > 1 ? name.join(loadingStore.config.separator) : null
+            name.length > 1 ? name.join(NAMESPACE_SEP) : null
         ];
     } else {
 
-        name = String(name).split(loadingStore.config.separator);
+        name = String(name).split(NAMESPACE_SEP);
 
         names = [
             name[0],
-            name.length > 1 ? name.join(loadingStore.config.separator) : null
+            name.length > 1 ? name.join(NAMESPACE_SEP) : null
         ];
     }
 
