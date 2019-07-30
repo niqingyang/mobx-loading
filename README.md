@@ -106,4 +106,4 @@ class XXX extends React.Component {
 
 ## License
 
-[MIT](http://opensource.org/licenses/MIT) Copyright (c) 2019
+[Apache-2.0](https://opensource.org/licenses/Apache-2.0) Copyright (c) 2019
